@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ke Mana Perginya Uang Kas Kecil? — Sintak 1 PBL</title>
+<style>
+:root{
+  --bg:#fdf6ec; --card:#ffffff; --ink:#2b2620; --sub:#6b6155;
+  --accent:#d97a3f; --accent2:#3f7a6b; --line:#e8ddd0; --bad:#c0503f;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1c1815; --card:#26221d; --ink:#f2ece2; --sub:#b7ab99;
+    --accent:#e69a63; --accent2:#6fbfab; --line:#3a332a; --bad:#e58a7a;
+  }
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:16px; padding-top:calc(16px + env(safe-area-inset-top,0px));
+  padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  min-height:100%;
+}
+.frame{
+  width:100%; max-width:440px; background:var(--card); border:1px solid var(--line);
+  border-radius:20px; padding:22px 20px; min-height:540px;
+  display:flex; flex-direction:column; box-shadow:0 8px 24px rgba(0,0,0,0.08);
+  position:relative; overflow:hidden;
+}
+.badge{font-size:10.5px; letter-spacing:.08em; color:#fff; background:var(--accent2);
+  display:inline-block; padding:3px 9px; border-radius:20px; font-weight:700; margin-bottom:8px; width:fit-content;}
+.tag{font-size:12px; letter-spacing:.06em; color:var(--accent); font-weight:700; text-transform:uppercase;}
+h1{font-size:17px; margin:4px 0 12px; line-height:1.3;}
+.stage{flex:1; display:flex; flex-direction:column; justify-content:center; gap:9px;}
+.emoji-row{font-size:36px; text-align:center; margin-bottom:2px;}
+.narasi{
+  font-size:13px; color:var(--sub); line-height:1.5; font-style:italic;
+  border-left:3px solid var(--accent); padding:6px 10px; background:var(--bg); border-radius:6px;
+}
+.screentext{
+  background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:12px 14px;
+  text-align:center; font-weight:700; font-size:14px;
+}
+.screentext .sub{font-weight:400; font-size:12.5px; color:var(--sub); margin-top:3px;}
+.list{display:flex; flex-direction:column; gap:6px;}
+.item{
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--bg); border:1px solid var(--line); border-radius:12px;
+  padding:8px 12px; font-size:13px; opacity:0; transform:translateY(8px);
+  animation:pop .45s ease forwards;
+}
+.item b{font-weight:600}
+@keyframes pop{to{opacity:1; transform:translateY(0)}}
+table{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:2px;}
+td{padding:6px; border-bottom:1px solid var(--line);}
+td:last-child{text-align:right; font-variant-numeric:tabular-nums;}
+.total-box{
+  border-radius:14px; padding:12px 14px; background:var(--bg);
+  border:1px solid var(--line); display:flex; flex-direction:column; gap:5px;
+}
+.total-row{display:flex; justify-content:space-between; font-size:13px;}
+.total-row.diff{font-weight:700; color:var(--bad); font-size:14.5px; border-top:1px dashed var(--line); padding-top:7px; margin-top:2px;}
+.compare{display:flex; flex-direction:column; gap:8px;}
+.compare-row{
+  display:flex; justify-content:space-between; align-items:center; gap:8px;
+  background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:9px 12px; font-size:12.5px;
+}
+.compare-row .label{font-weight:600; flex:1;}
+.compare-col{text-align:center;}
+.compare-col .k{font-size:10.5px; color:var(--sub); display:block;}
+.compare-col .v{font-weight:700;}
+.questions{display:flex; flex-direction:column; gap:8px; margin-top:4px;}
+.q{
+  background:var(--card); border:1.5px solid var(--accent2); color:var(--ink);
+  border-radius:12px; padding:10px 12px; font-size:13px; font-weight:600;
+  opacity:0; animation:pop .5s ease forwards;
+}
+.q:nth-child(1){animation-delay:.1s}
+.q:nth-child(2){animation-delay:.35s}
+.q:nth-child(3){animation-delay:.6s}
+.centered-title{font-size:18px; font-weight:800; text-align:center; letter-spacing:.02em;}
+.nav{display:flex; justify-content:space-between; align-items:center; margin-top:14px; gap:10px;}
+button{
+  border:none; background:var(--accent); color:#fff; font-weight:700; font-size:13.5px;
+  padding:10px 16px; border-radius:12px; cursor:pointer; -webkit-tap-highlight-color:transparent;
+}
+button.secondary{background:transparent; color:var(--sub); border:1px solid var(--line);}
+button:disabled{opacity:.35; pointer-events:none;}
+.dots{display:flex; gap:6px; flex-wrap:wrap; justify-content:center; max-width:120px;}
+.dot{width:6px; height:6px; border-radius:50%; background:var(--line);}
+.dot.active{background:var(--accent);}
+.hint{font-size:11.5px; color:var(--sub); text-align:center; margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="frame" id="frame">
+  <div class="badge">SINTAK 1 PBL — ORIENTASI MASALAH · KELAS XI/F</div>
+  <div class="tag" id="tag">SCENE 1 — PEMBUKAAN</div>
+  <h1>Ke Mana Perginya Uang Kas Kecil?</h1>
+  <div class="stage" id="stage"></div>
+  <div class="nav">
+    <button class="secondary" id="prevBtn">◀ Kembali</button>
+    <div class="dots" id="dots"></div>
+    <button id="nextBtn">Lanjut ▶</button>
+  </div>
+</div>
+<div class="hint" id="hint">Ketuk "Lanjut" untuk melanjutkan cerita</div>
+
+<script>
+const scenes = [
+  {
+    tag: "SCENE 1 — PEMBUKAAN",
+    render: stage => {
+      stage.innerHTML = `
+        <div class="emoji-row">🏢🗂️🧮</div>
+        <div class="narasi">"Setiap perusahaan membutuhkan kas kecil untuk membiayai berbagai kebutuhan operasional sehari-hari. Penggunaan kas kecil perlu dicatat dengan teliti dan didukung oleh bukti transaksi agar jumlah uang yang tersedia sesuai dengan catatan."</div>
+        <div class="screentext">KAS KECIL<div class="sub">Dana untuk memenuhi kebutuhan operasional sehari-hari.</div></div>
+      `;
+    }
+  },
+  {
+    tag: "SCENE 2 — DANA KAS KECIL",
+    render: stage => {
+      stage.innerHTML = `
+        <div class="emoji-row">🙋‍♀️💵📝</div>
+        <div class="narasi">"Pada awal periode, staf administrasi menerima dana kas kecil sebesar satu juta rupiah untuk memenuhi kebutuhan operasional kantor."</div>
+        <div class="total-box"><div class="total-row"><span>Dana awal kas kecil</span><b>Rp1.000.000</b></div></div>
+      `;
+    }
+  },
+  {
+    tag: "SCENE 3 — TERJADI BEBERAPA TRANSAKSI",
+    render: stage => {
+      const tx = [
+        ["✏️","Pembelian ATK","Rp100.000"],
+        ["🍱","Konsumsi rapat","Rp75.000"],
+        ["🚕","Transportasi operasional","Rp50.000"],
+        ["🖨️","Pembelian kertas printer","Rp125.000"],
+        ["💧","Pembelian air minum","Rp50.000"],
+      ];
+      stage.innerHTML = `
+        <div class="narasi">"Selama kegiatan operasional, kas kecil digunakan untuk beberapa kebutuhan kantor."</div>
+        <div class="list">${tx.map((t,i)=>`<div class="item" style="animation-delay:${i*0.3}s"><span>${t[0]} ${t[1]}</span><b>${t[2]}</b></div>`).join('')}</div>
+      `;
+    }
+  },
+  {
+    tag: "SCENE 4 — PENCATATAN",
+    render: stage => {
+      stage.innerHTML = `
+        <div class="emoji-row">🖊️📒</div>
+        <div class="narasi">"Seluruh transaksi kemudian dicatat oleh staf administrasi. Namun, tanpa disadari, terdapat perbedaan antara beberapa bukti transaksi dengan pencatatannya."</div>
+        <div class="compare">
+          <div class="compare-row">
+            <span class="label">🚕 Transportasi operasional</span>
+            <div class="compare-col"><span class="k">Bukti</span><span class="v">Rp50.000</span></div>
+            <div class="compare-col"><span class="k">Catatan</span><span class="v">Rp30.000</span></div>
+          </div>
+          <div class="compare-row">
+            <span class="label">💧 Air minum</span>
+            <div class="compare-col"><span class="k">Bukti</span><span class="v">Rp50.000</span></div>
+            <div class="compare-col"><span class="k">Catatan</span><span class="v">—</span></div>
+          </div>
+        </div>
+        <div class="narasi">"Ada nominal transaksi yang berbeda dari bukti, dan terdapat transaksi yang belum tercatat."</div>
+      `;
+    }
+  },
+  {
+    tag: "SCENE 5 — PEMERIKSAAN KAS",
+    render: stage => {
+      stage.innerHTML = `
+        <div class="emoji-row">🔍🧮</div>
+        <div class="narasi">"Ketika dilakukan pemeriksaan, staf menemukan sesuatu yang tidak terduga."</div>
+        <div class="total-box">
+          <div class="total-row"><span>Saldo menurut catatan</span><b>Rp670.000</b></div>
+          <div class="total-row"><span>Uang kas yang tersedia</span><b>Rp600.000</b></div>
+          <div class="total-row diff"><span>⚠️ SELISIH</span><span>Rp70.000</span></div>
+        </div>
+      `;
+    }
+  },
+  {
+    tag: "SCENE 6 — MASALAH",
+    render: stage => {
+      stage.innerHTML = `
+        <div class="centered-title">MENGAPA TERJADI SELISIH?</div>
+        <div class="questions">
+          <div class="q">1️⃣ Di mana letak ketidaksesuaian pencatatan?</div>
+          <div class="q">2️⃣ Apa penyebab saldo kas kecil tidak sesuai dengan uang yang tersedia?</div>
+          <div class="q">3️⃣ Bagaimana seharusnya pencatatan dilakukan?</div>
+        </div>
+      `;
+    }
+  },
+  {
+    tag: "SCENE 7 — PENUTUP",
+    render: stage => {
+      stage.innerHTML = `
+        <div class="emoji-row">🕵️‍♀️🔎</div>
+        <div class="centered-title">Saatnya Menjadi Detektif Kas Kecil!</div>
+        <div class="narasi" style="text-align:center;">"Temukan jawabannya melalui kegiatan berikutnya."</div>
+        <div class="screentext">Diskusikan. Analisis. Temukan solusinya.</div>
+      `;
+    }
+  }
+];
+
+let idx = 0;
+const stage = document.getElementById('stage');
+const tag = document.getElementById('tag');
+const dotsWrap = document.getElementById('dots');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const hint = document.getElementById('hint');
+
+function buildDots(){
+  dotsWrap.innerHTML = scenes.map((_,i)=>`<div class="dot${i===idx?' active':''}"></div>`).join('');
+}
+
+function render(){
+  tag.textContent = scenes[idx].tag;
+  scenes[idx].render(stage);
+  buildDots();
+  prevBtn.disabled = idx===0;
+  nextBtn.textContent = idx===scenes.length-1 ? "Selesai 🎬" : "Lanjut ▶";
+  hint.textContent = idx===scenes.length-1
+    ? "Diskusikan bersama kelompokmu, lalu kerjakan LKPD."
+    : "Ketuk \"Lanjut\" untuk melanjutkan cerita";
+}
+
+prevBtn.addEventListener('click', ()=>{ if(idx>0){ idx--; render(); } });
+nextBtn.addEventListener('click', ()=>{
+  if(idx<scenes.length-1){ idx++; render(); }
+});
+
+render();
+</script>
+</body>
+</html>
